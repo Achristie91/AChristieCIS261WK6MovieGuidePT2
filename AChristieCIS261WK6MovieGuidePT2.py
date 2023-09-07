@@ -1,5 +1,3 @@
-FILENAME = "movies.txt"
-
 def display_menu():
     print("The Movie List program")
     print()
@@ -9,56 +7,53 @@ def display_menu():
     print("del - Delete a movie")
     print("exit - Exit program")
     print()
-
-def write_movies(movies):
-    with open(FILENAME, "w") as file:
-        for movie in movies:
-            file.write(f"{movie}\n")
-            
-def read_movies():
-    movies = []
-    with open (FILENAME) as file:
-        for line in file:
-            line = line.replace("\n", "")
-            movies.append(line)
-    return movies
-
+    
 def list_movies(movies):
     for i, movie in enumerate(movies,  start=1):
         print(f"{i}. {movie}")
     print()
     
-def add_movie(movies):
-    movie = input("Movie:  ")
-    movies.append(movie)
-    write_movies(movies)
-    print(f"{movies} was added.\n")
+def add_title(movie_list, new_title):
+    movie_list.append(new_title)
+    print("Movie title added successfully.")
     
-def delete_movie(movies):
-    index = int(input("Number:  "))
-    if index < 1 or index >  len(movies):
-       print("Invalid movie number.\n")
+def delete(movie_list):
+    number = int(input("Number:  "))
+    if number < 1 or number > len(movie_list):
+        print("Invalid movie number. \n")
     else:
-        movie = movies.pop(index - 1)
-        write_movies(movies)
-        print(f"{movie} was deleted.\n")
-         
-def main():
+        movie = movie_list.pop(number - 1)
+        print(f"{movie} was deleted. \n")
+    
+def write_to_file(movie_list):
+    with open("movies.txt.", "w") as file:
+        for title in movie_list:
+            file.write(title + "\n")
+        
+def main(new_title=None):
+    movie_list  = []
+    
+    with open("movies.txt", "w") as file:
+        file.write("Cat on a Hot Tin Roof\nOn the Waterfront\nMonty Python and the Holy Grail\n")  
+
     display_menu()
-    movies = read_movies()
+    
     while True:
         command = input("Command:  ")
         if command.lower() == "list":
-            list_movies(movies)
-        elif command.lower() == "add":
-            add_movie(movies)
+            list(movie_list)   
+        elif  command.lower() == "add":
+            add_title(movie_list, new_title)
+            add_title(movie_list, new_title)
+            write_to_file(movie_list)
+            display_titles(movie_list)
         elif command.lower() == "del":
-            delete_movie(movies)
+            delete(movie_list)
         elif command.lower() == "exit":
-            print("Later!")
             break
         else:
-            print("Not a valid command. Please try again.")
-          
+            print("Not a valid command. Please try again.\n")
+    print("Later!")
+    
 if __name__ == "__main__":
     main()
